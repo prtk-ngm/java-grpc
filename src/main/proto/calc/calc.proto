@@ -1,0 +1,54 @@
+syntax = "proto3";
+package calc;
+
+option java_package = "com.dummy.calc";
+option java_multiple_files = true;
+
+message AddRequest{
+ int32  first_number = 1;
+ int32  second_number = 2;
+}
+
+message  AddResponse{
+ int32  sum = 1;
+}
+
+message PrimeDecomposeRequest{
+  int32 number = 1;
+}
+
+message PrimeDecomposeResponse{
+  int32 result = 1;
+}
+
+message AverageRequest{
+  int32 number = 1;
+}
+
+message AverageResponse{
+  int32 average = 1;
+}
+
+message CurrentMaxRequest{
+  int32 number = 1;
+}
+
+message CurrentMaxResponse{
+  int32 maxNumber = 1;
+}
+
+message SquareRootRequest{
+  int32 number = 1;
+}
+message SquareRootResponse{
+  double squareRoot = 1;
+}
+
+
+service AddService{
+  rpc Add(AddRequest) returns (AddResponse) {};
+  rpc primeDecompose(PrimeDecomposeRequest) returns (stream PrimeDecomposeResponse) {};
+  rpc average(stream AverageRequest) returns (AverageResponse) {};
+  rpc currentMax(stream CurrentMaxRequest) returns (stream CurrentMaxResponse) { };
+  rpc squareRoot(SquareRootRequest) returns (SquareRootResponse) {};
+}

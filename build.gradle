@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.8.14'
+    id 'idea'
+}
+
+sourceCompatibility = 1.8
+
+group 'com.learning.grpc'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.12.0"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.35.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+dependencies {
+    implementation 'io.grpc:grpc-netty-shaded:1.35.0' //include ssl feature.
+    implementation 'io.grpc:grpc-protobuf:1.35.0'
+    implementation 'io.grpc:grpc-stub:1.35.0'
+    // https://mvnrepository.com/artifact/io.grpc/grpc-services
+    compile group: 'io.grpc', name: 'grpc-services', version: '1.35.0'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+}
+
+// if you have source imports issues, add the below
+sourceSets.main.java.srcDir new File(buildDir, 'generated/source')
+idea {
+    module {
+        // Marks the already(!) added srcDir as "generated"
+        generatedSourceDirs += file('build/generated/source')
+    }
+}
